@@ -1,7 +1,16 @@
-import app from "./app";
-import GraphqlServer from "./graphql/GraphqlServer";
+import { startStandaloneServer } from "@apollo/server/standalone";
 
-GraphqlServer.listen().then(({ url }) => console.log(`GALHARDO FINANCES GraphqlServer running on => ${url}`));
+import app from "./app";
+import { graphqlServer } from "./graphql/graphqlServer";
+
+(async () => {
+    const { url } = await startStandaloneServer(graphqlServer, {
+        context: async ({ req }) => ({ token: req.headers.token }),
+        listen: { port: 4000 },
+    });
+
+    console.log(`🚀  GRAPHQL Server ready at ${url}`);
+})();
 
 app.listen(process.env.PORT || 3333, () =>
     console.log(

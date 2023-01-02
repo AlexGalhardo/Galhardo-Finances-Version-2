@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json())
     .use(cors())
     .use(compression())
-    .use(helmet())
+    .use(helmet({ contentSecurityPolicy: process.env.NODE_ENV === "production" ? undefined : false }))
     .use("/api", routes)
     .use((error: Error, request: Request, response: Response, next: NextFunction) => {
         if (error instanceof Error) {

@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "es2022",
-		"module": "es2022",
+		"target": "es2020",
+		"module": "esnext",
 		"allowJs": true,
 		"removeComments": true,
 		"resolveJsonModule": true,
@@ -13,8 +13,17 @@
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"moduleResolution": "Node16",
+		"moduleResolution": "node",
 		"skipLibCheck": true,
+		"rootDirs": [
+			"src"
+		],
+		"lib": [
+			"es2020"
+		],
+		"types": [
+			"node"
+		]
 	},
 	"include": [
 		"src/**/*",

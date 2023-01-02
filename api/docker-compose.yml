@@ -15,13 +15,25 @@ services:
             - galhardo_finances_network
 
     # system: postgresql | username: postgres | password: postgres |server: galhardoapp_api_postgres
-    galhardoapp_api_adminer:
+    galhardo_finances_adminer:
         image: adminer
         container_name: galhardoapp_api_adminer
         ports:
             - "8080:8080"
         networks:
             - galhardo_finances_network
+
+    galhardo_finances_mongodb:
+        image: mongo:4
+        container_name: galhardo_finances_mongodb
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: root
+        ports:
+            - 27017:27017
+        volumes:
+            - mongo-data:/data/db
 
 networks:
     galhardo_finances_network:
