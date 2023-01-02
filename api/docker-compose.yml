@@ -23,18 +23,6 @@ services:
         networks:
             - galhardo_finances_network
 
-    galhardo_finances_mongodb:
-        image: mongo:4
-        container_name: galhardo_finances_mongodb
-        restart: always
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: admin
-            MONGO_INITDB_ROOT_PASSWORD: root
-        ports:
-            - 27017:27017
-        volumes:
-            - mongo-data:/data/db
-
 networks:
     galhardo_finances_network:
         driver: bridge

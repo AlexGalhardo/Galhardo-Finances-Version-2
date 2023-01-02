@@ -134,7 +134,7 @@ export default class PostgresTransactionsRepository implements ITransactionsRepo
 
             await prisma.account.update({
                 where: {
-                    id: Account.id,
+                    account_id: Account.account_id,
                 },
                 data: {
                     current_balance: Account.current_balance,
@@ -156,7 +156,7 @@ export default class PostgresTransactionsRepository implements ITransactionsRepo
 
             const queryResponse = await prisma.transaction.create({
                 data: {
-                    id: randomUUID(),
+                    transaction_id: randomUUID(),
                     user_id,
                     user_email: Account.user_email,
                     account_id: Account.id,
@@ -179,7 +179,7 @@ export default class PostgresTransactionsRepository implements ITransactionsRepo
 
         const queryResponse = await prisma.transaction.update({
             where: {
-                id,
+                transaction_id: id,
             },
             data: {
                 type,
@@ -192,10 +192,10 @@ export default class PostgresTransactionsRepository implements ITransactionsRepo
         return queryResponse;
     }
 
-    async deleteById(transactionId: string): Promise<Transaction> {
+    async deleteById(transaction_id: string): Promise<Transaction> {
         const queryResponse = await prisma.transaction.delete({
             where: {
-                id: transactionId,
+                transaction_id,
             },
         });
 

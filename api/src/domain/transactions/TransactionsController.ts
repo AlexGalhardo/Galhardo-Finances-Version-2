@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 
 import { getTransactionsRepository } from "../../factories/getTransactionsRepository";
 import { getDecodedJwtToken } from "../../helpers/DecodeJwtToken";
@@ -15,17 +14,16 @@ class TransactionsController {
             getDecodedJwtToken(req).user_id,
         );
 
+        console.log("allTransactions => ", allTransactions);
+
         return res.status(allTransactions ? 200 : 404).json(allTransactions);
     }
 
     async getTransactionsByCategory(req: Request, res: Response) {
-        const JWT_TOKEN = req.headers.authorization?.split(" ")[1];
-        const jwtPayload = jwt.verify(JWT_TOKEN as string, process.env.JWT_SECRET as string) as jwt.JwtPayload;
-
         const { category, startDate, finalDate } = req.body;
 
         const response = await new GetTransactionsByCategoryUseCase(getTransactionsRepository()).execute(
-            jwtPayload.user_id,
+            getDecodedJwtToken(req).user_id,
             category,
             startDate,
             finalDate,

@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 import prisma from "../../config/prisma";
 import Bcrypt from "../../helpers/Bcrypt";
+import DateTime from "../../helpers/DateTime";
 import { IUpdateUserParams, IUsersRepository, registerUserParams } from "../../ports/IUsersRepository";
 
 export default class PostgresUsersRepository implements IUsersRepository {
@@ -19,11 +20,12 @@ export default class PostgresUsersRepository implements IUsersRepository {
 
         const queryResponse = await prisma.user.create({
             data: {
-                id: newuser_id,
+                user_id: newuser_id,
                 name,
                 email,
                 password: await Bcrypt.hash(password),
                 jwt_token: jwtToken,
+                created_at: DateTime.getNow(),
             },
         });
 
@@ -38,7 +40,7 @@ export default class PostgresUsersRepository implements IUsersRepository {
 
         const queryResponse = await prisma.user.update({
             where: {
-                id: updateUserParamsObject.id,
+                user_id: updateUserParamsObject.id,
             },
             data: {
                 name,
@@ -70,7 +72,7 @@ export default class PostgresUsersRepository implements IUsersRepository {
         try {
             const userExists = await prisma.user.findUnique({
                 where: {
-                    id: user_id,
+                    user_id,
                 },
             });
 
@@ -89,7 +91,7 @@ export default class PostgresUsersRepository implements IUsersRepository {
     async getById(user_id: string): Promise<User | null> {
         const queryResponse = await prisma.user.findUnique({
             where: {
-                id: user_id,
+                user_id,
             },
         });
 
@@ -104,7 +106,7 @@ export default class PostgresUsersRepository implements IUsersRepository {
     async deleteById(user_id: string): Promise<boolean> {
         const queryResponse = await prisma.user.delete({
             where: {
-                id: user_id,
+                user_id,
             },
         });
 
@@ -116,7 +118,7 @@ export default class PostgresUsersRepository implements IUsersRepository {
     async logout(user_id: string): Promise<boolean> {
         const queryResponse = await prisma.user.update({
             where: {
-                id: user_id,
+                user_id,
             },
             data: {
                 jwt_token: null,

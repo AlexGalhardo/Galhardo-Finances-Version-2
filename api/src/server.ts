@@ -9,11 +9,11 @@ import { graphqlServer } from "./graphql/graphqlServer";
         listen: { port: 4000 },
     });
 
-    console.log(`🚀  GRAPHQL Server ready at ${url}`);
+    console.log(`🚀 GALHARDO GRAPHQL API server is running at ${url}`);
 })();
 
 app.listen(process.env.PORT || 3333, () =>
     console.log(
-        `GALHARDO FINANCES HTTP REST API server is running at ${process.env.API_URL}:${process.env.PORT ?? 3333}`,
+        `🚀 GALHARDO FINANCES HTTP REST API server is running at ${process.env.API_URL}:${process.env.PORT ?? 3333}`,
     ),
 );

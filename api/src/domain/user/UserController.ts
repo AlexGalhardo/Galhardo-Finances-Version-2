@@ -45,7 +45,7 @@ class UserController {
 
         const jwtToken = jwt.sign(
             {
-                user_id: user?.id,
+                user_id: user?.user_id,
             },
             process.env.JWT_SECRET as string,
             { expiresIn: "1h" },
@@ -54,7 +54,7 @@ class UserController {
         return res.status(200).json({
             success: true,
             message: `${email} login successfully`,
-            user_id: user?.id,
+            user_id: user?.user_id,
             jwt_token: jwtToken,
         });
     }
