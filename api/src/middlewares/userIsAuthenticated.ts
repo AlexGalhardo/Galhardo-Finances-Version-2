@@ -14,6 +14,9 @@ export const userIsAuthenticated = async (req: Request, res: Response, next: Nex
         !req.headers.authorization.startsWith("Bearer") ||
         !req.headers.authorization.split(" ")[1]
     ) {
+        if (process.env.NODE_ENV === "development") {
+            return next();
+        }
         return res.status(422).json({
             success: false,
             message: "Please provide the User JWT Token in Header Authorization Bearer Token",
@@ -22,7 +25,6 @@ export const userIsAuthenticated = async (req: Request, res: Response, next: Nex
 
     try {
         const userExists = await new PostgresUsersRepository().userExists(getDecodedJwtToken(req).user_id);
-        console.log("userExists => ", userExists);
 
         if (!userExists) {
             return res.status(422).json({

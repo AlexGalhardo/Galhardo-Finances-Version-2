@@ -1,13 +1,14 @@
 import { getTransactionCategoryIcon, transformToBRL } from "./getDashboardData";
-const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+const BEARER_JWT_TOKEN = import.meta.env.VITE_BEARER_JWT_TOKEN;
 
 async function getTransactions() {
-	let request = await fetch(`${apiEndpoint}/transaction/all`, {
+	let request = await fetch(`${API_ENDPOINT}/transaction/all`, {
 					method: "GET",
 					headers: {
 						"Content-type": "application/json;charset=UTF-8",
 						"Accept": "application/json",
-						"Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYmNlOWUxNzYtODI2NC00NzE0LWFmMjUtYzczY2ZmMjE5ODE2IiwiaWF0IjoxNjcyNjgyMDk5LCJleHAiOjE2NzI2ODU2OTl9.KoR2-QH3fXoS8HAaR-7yhRZ3kQYc-uCmsTJ1EF8DWdY`
+						"Authorization": `Bearer ${BEARER_JWT_TOKEN}`
 					}
 				});
 

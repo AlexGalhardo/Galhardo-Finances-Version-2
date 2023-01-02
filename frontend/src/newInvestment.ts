@@ -1,5 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
-import { getDateTimeBrazil, transformStringInputValueMaskToNumber } from "./getDashboardData";
+import { transformStringInputValueMaskToNumber } from "./getDashboardData";
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+const BEARER_JWT_TOKEN = import.meta.env.VITE_BEARER_JWT_TOKEN;
+const USER_TEST_ID = import.meta.env.VITE_USER_TEST_ID;
 
 export function newInvestment(
     element: HTMLButtonElement,
@@ -7,9 +9,10 @@ export function newInvestment(
     investmentDescription: HTMLInputElement,
     investmentCategory: HTMLSelectElement,
 ) {
-    element.addEventListener("click", () => {
+    element.addEventListener("click", async () => {
+
         if (amountInvestment.value && investmentDescription.value && investmentCategory.value) {
-            let Account = JSON.parse(localStorage.getItem("galhardo_finances")!);
+
             const amountInvested = transformStringInputValueMaskToNumber(amountInvestment.value);
 
             if (amountInvested <= 0) {
@@ -17,81 +20,25 @@ export function newInvestment(
             }
 
             if (amountInvested > 0) {
-                if (Account) {
-                    if (amountInvested <= Account.current_balance) {
-                        Account.current_balance -= amountInvested;
-                        Account.investments_total += amountInvested;
+                const request = await fetch(`${API_ENDPOINT}/transaction/create`, {
+						method: "POST",
+						headers: {
+							"Content-type": "application/json;charset=UTF-8",
+							"Accept": "application/json",
+							"Authorization": `Bearer ${BEARER_JWT_TOKEN}`
+						},
+						body: JSON.stringify({
+							user_id: USER_TEST_ID,
+							type: "INVESTMENT",
+							category: investmentCategory.value,
+							description: investmentDescription.value,
+							amount: amountInvested,
+						})
+					})
 
-                        if (investmentCategory.value === "FIXED_INCOME")
-                            Account.investments_fixed_income += amountInvested;
+				const response = await request.json()
 
-                        if (investmentCategory.value === "VARIABLE_INCOME")
-                            Account.investments_variable_income += amountInvested;
-
-                        if (investmentCategory.value === "CRIPTOCURRENCIES")
-                            Account.investments_criptocurrencies += amountInvested;
-
-                        if (investmentCategory.value === "OTHERS") Account.investments_others += amountInvested;
-
-                        Account.transactions.push({
-                            id: uuidv4(),
-                            created_at: getDateTimeBrazil(),
-                            updated_at: null,
-                            type: "INVESTMENT",
-                            category: investmentCategory.value,
-                            description: investmentDescription.value,
-                            amount: amountInvested,
-                        });
-
-                        localStorage.setItem("galhardo_finances", JSON.stringify(Account));
-                    } else {
-                        alert("You dont have sufficient balance to make this investment!");
-                    }
-                } else {
-                    Account = {
-                        account_id: uuidv4(),
-                        current_balance: 0,
-                        total_expenses: 0,
-                        total_food: 0,
-                        total_subscriptions: 0,
-                        total_shop: 0,
-                        total_entertainment: 0,
-                        total_transport: 0,
-                        total_house: 0,
-                        total_services: 0,
-                        investments_total: 0,
-                        investments_fixed_income: 0,
-                        investments_variable_income: 0,
-                        investments_criptocurrencies: 0,
-                        investments_others: 0,
-                        transactions: [
-                            {
-                                id: uuidv4(),
-                                created_at: getDateTimeBrazil(),
-                                updated_at: null,
-                                type: "INVESTMENT",
-                                category: investmentCategory.value,
-                                description: investmentDescription.value,
-                                amount: amountInvested,
-                            },
-                        ],
-                    };
-
-                    Account.current_balance -= amountInvested;
-                    Account.investments_total += amountInvested;
-
-                    if (investmentCategory.value === "FIXED_INCOME") Account.investments_fixed_income += amountInvested;
-
-                    if (investmentCategory.value === "VARIABLE_INCOME")
-                        Account.investments_variable_income += amountInvested;
-
-                    if (investmentCategory.value === "CRIPTOCURRENCIES")
-                        Account.investments_criptocurrencies += amountInvested;
-
-                    if (investmentCategory.value === "OTHERS") Account.investments_others += amountInvested;
-
-                    localStorage.setItem("galhardo_finances", JSON.stringify(Account));
-                }
+				if(!response) alert('Something went wrong to make this expense!')
             }
         }
     });

@@ -15,7 +15,7 @@ export default class PostgresUsersRepository implements IUsersRepository {
         const newuser_id = randomUUID();
 
         const jwtToken = jwt.sign({ user_id: newuser_id }, process.env.JWT_SECRET as string, {
-            expiresIn: "1h",
+            expiresIn: "24h",
         });
 
         const queryResponse = await prisma.user.create({

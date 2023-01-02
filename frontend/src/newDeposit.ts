@@ -1,5 +1,7 @@
 import { transformStringInputValueMaskToNumber } from "./getDashboardData";
-const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+const BEARER_JWT_TOKEN = import.meta.env.VITE_BEARER_JWT_TOKEN;
+const USER_TEST_ID = import.meta.env.VITE_USER_TEST_ID;
 
 export function newDeposit(
     element: HTMLButtonElement,
@@ -18,22 +20,23 @@ export function newDeposit(
 
             if (amountDeposited > 0) {
 
-				const request = await fetch(`${apiEndpoint}/transaction/create`, {
+				const request = await fetch(`${API_ENDPOINT}/transaction/create`, {
 						method: "POST",
 						headers: {
 							"Content-type": "application/json;charset=UTF-8",
 							"Accept": "application/json",
-							"Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYmNlOWUxNzYtODI2NC00NzE0LWFmMjUtYzczY2ZmMjE5ODE2IiwiaWF0IjoxNjcyNjgyMDk5LCJleHAiOjE2NzI2ODU2OTl9.KoR2-QH3fXoS8HAaR-7yhRZ3kQYc-uCmsTJ1EF8DWdY`
+							"Authorization": `Bearer ${BEARER_JWT_TOKEN}`
 						},
 						body: JSON.stringify({
-							user_id: "69c4f756-57b0-4bca-b5a3-4fef42e9bc82",
+							user_id: USER_TEST_ID,
 							type: "DEPOSIT",
 							category: depositCategory.value,
 							description: depositDescription.value,
 							amount: amountDeposited,
 						})
 					})
-				const response = await request.json()
+
+					const response = await request.json()
 
 				if(!response) alert('Something went wrong to make this deposit!')
             }

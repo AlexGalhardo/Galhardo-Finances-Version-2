@@ -14,8 +14,6 @@ class TransactionsController {
             getDecodedJwtToken(req).user_id,
         );
 
-        console.log("allTransactions => ", allTransactions);
-
         return res.status(allTransactions ? 200 : 404).json(allTransactions);
     }
 

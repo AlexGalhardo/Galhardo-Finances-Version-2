@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+const BEARER_JWT_TOKEN = import.meta.env.VITE_BEARER_JWT_TOKEN;
 
 enum TransactionTypeEnum {
     DEPOSIT = "DEPOSIT",
@@ -72,12 +73,12 @@ let Account: IAccount = {
 };
 
 async function getDashboardData(){
-	let request = await fetch(`${apiEndpoint}/account/dashboard`, {
+	const request = await fetch(`${API_ENDPOINT}/account/dashboard`, {
 		method: "GET",
 		headers: {
 			"Content-type": "application/json;charset=UTF-8",
 			"Accept": "application/json",
-			"Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYmNlOWUxNzYtODI2NC00NzE0LWFmMjUtYzczY2ZmMjE5ODE2IiwiaWF0IjoxNjcyNjgyMDk5LCJleHAiOjE2NzI2ODU2OTl9.KoR2-QH3fXoS8HAaR-7yhRZ3kQYc-uCmsTJ1EF8DWdY`
+			"Authorization": `Bearer ${BEARER_JWT_TOKEN}`
 		}
 	});
 
@@ -88,7 +89,6 @@ async function getDashboardData(){
 Account = await getDashboardData()
 
 if(Account){
-
 	Account.current_balance = 0;
 	Account.total_expenses = 0;
 	Account.total_food = 0;

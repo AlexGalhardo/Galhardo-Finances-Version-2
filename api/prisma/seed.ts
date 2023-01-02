@@ -7,8 +7,8 @@ import { TransactionTypeEnum, TransactionCategoryEnum } from "../src/helpers/Int
 
 const prisma = new PrismaClient();
 
-export const testAccountId = randomUUID();
-export const testUserId = randomUUID();
+export const testAccountId = "e833463d-ca37-412f-9467-06532fc2a622";
+export const testUserId = "69c4f756-57b0-4bca-b5a3-4fef42e9bc82";
 export const testUserEmail = "test@gmail.com";
 export const testUserPassword = "test123";
 
