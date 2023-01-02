@@ -30,3 +30,6 @@
 - $ sudo docker-compose up -d --remove-orphans
 - $ sudo docker inspect CONTAINER_NAME_OR_ID | grep '"IPAddress"' | head -n 1
 - $ docker inspect --format '{{ .NetworkSettings.IPAddress }}' container_name_or_id
+
+## Deploy Railway.app
+- https://nixpacks.com/docs/getting-started
