@@ -7,6 +7,8 @@ export function deleteTransaction(elements: NodeListOf<HTMLButtonElement>) {
 
 		elements[index].addEventListener("click", async (event: any) => {
 
+			event.preventDefault()
+
 			if (confirm("Are you sure you want to delete this transaction?")) {
 
 				const buttonId = event?.srcElement.id;
@@ -23,6 +25,8 @@ export function deleteTransaction(elements: NodeListOf<HTMLButtonElement>) {
 				const response = await request.json()
 
 				if(!response) alert('Something went wrong with this delete operation!')
+
+				window.location.reload();
             }
         });
     }

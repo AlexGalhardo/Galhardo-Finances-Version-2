@@ -9,7 +9,9 @@ export function newInvestment(
     investmentDescription: HTMLInputElement,
     investmentCategory: HTMLSelectElement,
 ) {
-    element.addEventListener("click", async () => {
+    element.addEventListener("click", async (event: Event) => {
+
+		event.preventDefault()
 
         if (amountInvestment.value && investmentDescription.value && investmentCategory.value) {
 
@@ -38,7 +40,9 @@ export function newInvestment(
 
 				const response = await request.json()
 
-				if(!response) alert('Something went wrong to make this expense!')
+				if(!response) alert('Something went wrong to make this investment!')
+
+				window.location.reload();
             }
         }
     });

@@ -9,7 +9,9 @@ export function newExpense(
     expenseDescription: HTMLInputElement,
     expenseCategory: HTMLSelectElement,
 ) {
-    element.addEventListener("click", async () => {
+    element.addEventListener("click", async (event: Event) => {
+
+		event.preventDefault()
 
         if (amountExpense.value && expenseDescription.value && expenseCategory.value) {
             const amountExpensed = transformStringInputValueMaskToNumber(amountExpense.value);
@@ -39,6 +41,8 @@ export function newExpense(
 				const response = await request.json()
 
 				if(!response) alert('Something went wrong to make this expense!')
+
+				window.location.reload();
             }
         }
     });

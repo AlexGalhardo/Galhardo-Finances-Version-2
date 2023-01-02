@@ -9,7 +9,9 @@ export function newDeposit(
     depositDescription: HTMLInputElement,
     depositCategory: HTMLSelectElement,
 ) {
-    element.addEventListener("click", async () => {
+    element.addEventListener("click", async (event: Event) => {
+
+		event.preventDefault()
 
         if (amountDeposit.value && depositDescription.value && depositCategory.value) {
             const amountDeposited = transformStringInputValueMaskToNumber(amountDeposit.value);
@@ -21,24 +23,26 @@ export function newDeposit(
             if (amountDeposited > 0) {
 
 				const request = await fetch(`${API_ENDPOINT}/transaction/create`, {
-						method: "POST",
-						headers: {
-							"Content-type": "application/json;charset=UTF-8",
-							"Accept": "application/json",
-							"Authorization": `Bearer ${BEARER_JWT_TOKEN}`
-						},
-						body: JSON.stringify({
-							user_id: USER_TEST_ID,
-							type: "DEPOSIT",
-							category: depositCategory.value,
-							description: depositDescription.value,
-							amount: amountDeposited,
-						})
+					method: "POST",
+					headers: {
+						"Content-type": "application/json;charset=UTF-8",
+						"Accept": "application/json",
+						"Authorization": `Bearer ${BEARER_JWT_TOKEN}`
+					},
+					body: JSON.stringify({
+						user_id: USER_TEST_ID,
+						type: "DEPOSIT",
+						category: depositCategory.value,
+						description: depositDescription.value,
+						amount: amountDeposited,
 					})
+				})
 
-					const response = await request.json()
+				const response = await request.json()
 
 				if(!response) alert('Something went wrong to make this deposit!')
+
+				window.location.reload();
             }
         }
     });
