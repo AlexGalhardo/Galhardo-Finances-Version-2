@@ -159,7 +159,7 @@ export default class PostgresTransactionsRepository implements ITransactionsRepo
                     transaction_id: randomUUID(),
                     user_id,
                     user_email: Account.user_email,
-                    account_id: Account.id,
+                    account_id: Account.account_id,
                     type,
                     category,
                     description,

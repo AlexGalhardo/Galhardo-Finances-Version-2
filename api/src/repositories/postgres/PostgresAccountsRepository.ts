@@ -10,6 +10,9 @@ export default class PostgresAccountsRepository implements IAccountsRepository {
             where: {
                 user_id,
             },
+            include: {
+                Transaction: true,
+            },
         });
 
         return Account as Account;
