@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
 enum TransactionTypeEnum {
     DEPOSIT = "DEPOSIT",
@@ -48,7 +49,7 @@ export interface IAccount {
     investments_variable_income: number;
     investments_criptocurrencies: number;
     investments_others: number;
-    transactions: ITransaction[];
+    Transaction: ITransaction[];
 }
 
 let Account: IAccount = {
@@ -67,68 +68,74 @@ let Account: IAccount = {
     investments_variable_income: 0,
     investments_criptocurrencies: 0,
     investments_others: 0,
-    transactions: [],
+    Transaction: [],
 };
 
-(async () => {
+async function getDashboardData(){
+	let request = await fetch(`${apiEndpoint}/account/dashboard`, {
+		method: "GET",
+		headers: {
+			"Content-type": "application/json;charset=UTF-8",
+			"Accept": "application/json",
+			"Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYmNlOWUxNzYtODI2NC00NzE0LWFmMjUtYzczY2ZmMjE5ODE2IiwiaWF0IjoxNjcyNjgyMDk5LCJleHAiOjE2NzI2ODU2OTl9.KoR2-QH3fXoS8HAaR-7yhRZ3kQYc-uCmsTJ1EF8DWdY`
+		}
+	});
 
-})()
+	const response =  await request.json()
+	return response.data
+}
 
-// let Account = JSON.parse(localStorage.getItem("galhardo_finances")!);
-// localStorage.setItem("galhardo_finances", JSON.stringify(Account));
+Account = await getDashboardData()
 
+if(Account){
 
-if (localStorage.getItem("galhardo_finances")) {
-    Account = JSON.parse(localStorage.getItem("galhardo_finances")!);
-    Account.current_balance = 0;
-    Account.total_expenses = 0;
-    Account.total_food = 0;
-    Account.total_subscriptions = 0;
-    Account.total_shop = 0;
-    Account.total_entertainment = 0;
-    Account.total_transport = 0;
-    Account.total_house = 0;
-    Account.total_services = 0;
-    Account.investments_total = 0;
-    Account.investments_fixed_income = 0;
-    Account.investments_variable_income = 0;
-    Account.investments_criptocurrencies = 0;
-    Account.investments_others = 0;
+	Account.current_balance = 0;
+	Account.total_expenses = 0;
+	Account.total_food = 0;
+	Account.total_subscriptions = 0;
+	Account.total_shop = 0;
+	Account.total_entertainment = 0;
+	Account.total_transport = 0;
+	Account.total_house = 0;
+	Account.total_services = 0;
+	Account.investments_total = 0;
+	Account.investments_fixed_income = 0;
+	Account.investments_variable_income = 0;
+	Account.investments_criptocurrencies = 0;
+	Account.investments_others = 0;
 
-    for (let i = 0; i < Account.transactions.length; i++) {
-        if (Account.transactions[i].type === "DEPOSIT") {
-            Account.current_balance += Account.transactions[i].amount;
-        } else if (Account.transactions[i].type === "EXPENSE") {
-            Account.total_expenses += Account.transactions[i].amount;
-            Account.current_balance -= Account.transactions[i].amount;
+	for (let i = 0; i < Account.Transaction.length; i++) {
+		if (Account.Transaction[i].type === "DEPOSIT") {
+			Account.current_balance += Account.Transaction[i].amount;
+		} else if (Account.Transaction[i].type === "EXPENSE") {
+			Account.total_expenses += Account.Transaction[i].amount;
+			Account.current_balance -= Account.Transaction[i].amount;
 
-            if (Account.transactions[i].category === "FOOD") Account.total_food += Account.transactions[i].amount;
-            if (Account.transactions[i].category === "SUBSCRIPTIONS")
-                Account.total_subscriptions += Account.transactions[i].amount;
-            if (Account.transactions[i].category === "SHOP") Account.total_shop += Account.transactions[i].amount;
-            if (Account.transactions[i].category === "ENTERTAINMENT")
-                Account.total_entertainment += Account.transactions[i].amount;
-            if (Account.transactions[i].category === "TRANSPORT")
-                Account.total_transport += Account.transactions[i].amount;
-            if (Account.transactions[i].category === "HOUSE") Account.total_house += Account.transactions[i].amount;
-            if (Account.transactions[i].category === "SERVICES")
-                Account.total_services += Account.transactions[i].amount;
-        } else if (Account.transactions[i].type === "INVESTMENT") {
-            Account.investments_total += Account.transactions[i].amount;
-            Account.current_balance -= Account.transactions[i].amount;
+			if (Account.Transaction[i].category === "FOOD") Account.total_food += Account.Transaction[i].amount;
+			if (Account.Transaction[i].category === "SUBSCRIPTIONS")
+				Account.total_subscriptions += Account.Transaction[i].amount;
+			if (Account.Transaction[i].category === "SHOP") Account.total_shop += Account.Transaction[i].amount;
+			if (Account.Transaction[i].category === "ENTERTAINMENT")
+				Account.total_entertainment += Account.Transaction[i].amount;
+			if (Account.Transaction[i].category === "TRANSPORT")
+				Account.total_transport += Account.Transaction[i].amount;
+			if (Account.Transaction[i].category === "HOUSE") Account.total_house += Account.Transaction[i].amount;
+			if (Account.Transaction[i].category === "SERVICES")
+				Account.total_services += Account.Transaction[i].amount;
+		} else if (Account.Transaction[i].type === "INVESTMENT") {
+			Account.investments_total += Account.Transaction[i].amount;
+			Account.current_balance -= Account.Transaction[i].amount;
 
-            if (Account.transactions[i].category === "FIXED_INCOME")
-                Account.investments_fixed_income += Account.transactions[i].amount;
-            if (Account.transactions[i].category === "VARIABLE_INCOME")
-                Account.investments_variable_income += Account.transactions[i].amount;
-            if (Account.transactions[i].category === "CRIPTOCURRENCIES")
-                Account.investments_criptocurrencies += Account.transactions[i].amount;
-            if (Account.transactions[i].category === "OTHERS")
-                Account.investments_others += Account.transactions[i].amount;
-        }
-    }
-
-    localStorage.setItem("galhardo_finances", JSON.stringify(Account));
+			if (Account.Transaction[i].category === "FIXED_INCOME")
+				Account.investments_fixed_income += Account.Transaction[i].amount;
+			if (Account.Transaction[i].category === "VARIABLE_INCOME")
+				Account.investments_variable_income += Account.Transaction[i].amount;
+			if (Account.Transaction[i].category === "CRIPTOCURRENCIES")
+				Account.investments_criptocurrencies += Account.Transaction[i].amount;
+			if (Account.Transaction[i].category === "OTHERS")
+				Account.investments_others += Account.Transaction[i].amount;
+		}
+	}
 }
 
 export function transformToBRL(amount: number) {

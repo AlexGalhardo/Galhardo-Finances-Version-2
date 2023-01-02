@@ -10,8 +10,6 @@ export function deleteTransaction(elements: NodeListOf<HTMLButtonElement>) {
 
 				const buttonId = event?.srcElement.id;
 
-				console.log(apiEndpoint, buttonId)
-
 				const request = await fetch(`${apiEndpoint}/transaction/delete/${buttonId}`, {
 						method: "DELETE",
 						headers: {
