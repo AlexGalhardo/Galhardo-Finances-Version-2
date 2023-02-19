@@ -1,11 +1,11 @@
 <div align="center">
-<h1 align="center"><a href="#" target="_blank">💵 Galhardo Finances 2.0 💵</a></h1>
+<h1 align="center"><a href="https://galhardo-finances-version-2.vercel.app/" target="_blank">💵 Galhardo Finances 2.0 💵</a></h1>
 <h3 align="center">A Simple Web App Project To Learn Clean Architecture</h3>
 </div>
 
-## <a href="#" target="_blank">LIVE DEMO</a>
+## <a href="https://galhardo-finances-version-2.vercel.app/" target="_blank">LIVE DEMO</a>
 
-- You can access: #
+- API Endpoint: https://galhardo-finances-version-2-production.up.railway.app/
 
 ### How To Install and Use Locally
 
